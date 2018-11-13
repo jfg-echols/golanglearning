@@ -5,8 +5,6 @@ func main() {
 	cards.shuffleDeck()
 	cards.printAllCards()
 
-	// cards.printAllCards()
-
 	// hand, remainingCards := dealHand(cards, 5)
 	// hand.printAllCards()
 	// println("hand^^remaining__")
