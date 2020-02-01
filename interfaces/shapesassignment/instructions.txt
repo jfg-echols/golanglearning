@@ -1,0 +1,13 @@
+write a program that creats two custom types called square and triangle
+-done
+square should be a struct with field called side length type float64
+-done
+triangle should be a struct witha field called height (float64) and base (float64)
+-done
+both should have a function called getArea returns the calculated area of square and triangle
+	-triangle = 0.5*base*height
+	-square = length*length
+
+add shape interface that defines a function called printArea
+this function shuold calculate teh shape and print it out to the terminal. 
+Design the interface so that printArea can be called with either triangle or square
