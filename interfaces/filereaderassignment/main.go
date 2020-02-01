@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"io/ioutil"
+	"log"
 	"os"
 )
 
@@ -23,12 +25,59 @@ func main() {
 	// fmt.Println(os.O_RDWR)
 	// fmt.Println(os.O_CREATE)
 
+	// my version
 	fileContents, err := ioutil.ReadFile(myFileName)
-
+	fmt.Println("JONO VERSION=============")
 	if err != nil {
 		fmt.Println(err)
-	} else {
-		fmt.Println("++++File Contents++++")
-		fmt.Println(string(fileContents))
+		os.Exit(1)
+	}
+	fmt.Println("++++File Contents++++")
+	fmt.Println(string(fileContents))
+
+	//instructor's version
+	myFile, err := os.Open(myFileName)
+	fmt.Println("INSTRUCTOR VERSION=============")
+	//os.Open() returns *File pointer
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
+	//File type implements Read function which has a byte slice input https://golang.org/pkg/os/#File
+	// func (f *File) Read(b []byte) (n int, err error)
+
+	//io.Copy uses destination of Writer type and source of Reader type (ie... the file)
+	//os.Stdout -- Stdin, Stdout, and Stderr are open Files pointing to the standard input, standard output, and standard error file descriptors.
+	//Open results in myfile (type *File pointer).File pointers type uses Read ([]byte)
+	//io.Copy uses Reader type. Reader type also uses Read ([]byte)
+	io.Copy(os.Stdout, myFile)
+
+	//other student 1
+	fmt.Println("STUDENT VERSION=============")
+	f, err := os.Open(os.Args[1])
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer f.Close()
+
+	buffer := make([]byte, 32*1024)
+
+	for {
+		slice, err := f.Read(buffer)
+
+		if slice > 0 {
+			fmt.Print(string(buffer[:slice]))
+		}
+
+		if err == io.EOF {
+			break
+		}
+
+		if err != nil {
+			log.Printf("read %d bytes: %v", slice, err)
+			break
+		}
 	}
 }
